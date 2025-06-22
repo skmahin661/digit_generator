@@ -1,0 +1,215 @@
+<!-- templates/index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Digit Generator</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+    /* Reset and base */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      color: #eee;
+      padding: 40px 20px 60px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    h1 {
+      font-weight: 700;
+      font-size: 3rem;
+      margin-bottom: 0.3em;
+      letter-spacing: 1.4px;
+      text-shadow: 0 2px 10px rgba(255, 255, 255, 0.15);
+    }
+
+    .container {
+      background: rgba(30, 30, 30, 0.85);
+      border-radius: 20px;
+      padding: 40px 50px 50px;
+      width: 460px;
+      max-width: 95vw;
+      box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.7),
+        inset 0 0 30px rgba(255, 255, 255, 0.05);
+      backdrop-filter: saturate(180%) blur(15px);
+      -webkit-backdrop-filter: saturate(180%) blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    form.digit-form {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    label {
+      font-weight: 600;
+      font-size: 1.25rem;
+      flex-grow: 1;
+      min-width: 120px;
+    }
+
+    input[type="number"] {
+      flex-grow: 1;
+      max-width: 90px;
+      padding: 12px 15px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 12px;
+      border: none;
+      background: #141414;
+      color: #eee;
+      box-shadow:
+        inset 0 0 8px rgba(255, 255, 255, 0.1);
+      transition: box-shadow 0.3s ease, background-color 0.3s ease;
+      text-align: center;
+    }
+
+    input[type="number"]:focus {
+      outline: none;
+      background: #222;
+      box-shadow:
+        0 0 12px 3px #00ffea,
+        inset 0 0 10px rgba(0, 255, 234, 0.6);
+      color: #00ffe3;
+    }
+
+    button {
+      background: linear-gradient(135deg, #00ffe3, #007d81);
+      color: #111;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 16px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow:
+        0 4px 15px rgba(0, 255, 227, 0.7);
+      transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+      flex-grow: 1;
+      max-width: 140px;
+      user-select: none;
+    }
+
+    button:hover,
+    button:focus {
+      background: linear-gradient(135deg, #00ffea, #00b3b9);
+      box-shadow:
+        0 6px 22px rgba(0, 255, 234, 1);
+      transform: scale(1.05);
+      outline: none;
+    }
+
+    h2 {
+      font-weight: 700;
+      font-size: 1.8rem;
+      margin-bottom: 25px;
+      letter-spacing: 0.8px;
+      text-align: center;
+      color: #00ffe3;
+      text-shadow: 0 0 6px #00ffe3;
+    }
+
+    .images {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .images img {
+      width: 130px;
+      height: 130px;
+      border-radius: 18px;
+      background: #121212;
+      box-shadow:
+        0 10px 30px rgba(0, 255, 234, 0.4),
+        inset 0 0 12px rgba(0, 255, 234, 0.15);
+      padding: 15px;
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+      cursor: default;
+      object-fit: contain;
+    }
+
+    .images img:hover {
+      transform: scale(1.15);
+      box-shadow:
+        0 20px 45px rgba(0, 255, 234, 0.75),
+        inset 0 0 20px rgba(0, 255, 234, 0.3);
+      z-index: 10;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      .container {
+        padding: 30px 20px 40px;
+      }
+
+      form.digit-form {
+        flex-direction: column;
+        gap: 20px;
+        align-items: stretch;
+      }
+
+      label {
+        text-align: left;
+        min-width: unset;
+        font-size: 1.15rem;
+      }
+
+      input[type="number"],
+      button {
+        max-width: 100%;
+        flex-grow: unset;
+      }
+
+      h1 {
+        font-size: 2.25rem;
+      }
+
+      .images img {
+        width: 100px;
+        height: 100px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Generate Handwritten Digit Images</h1>
+
+  <div class="container">
+    <form method="POST" class="digit-form" autocomplete="off">
+      <label for="digit">Select a digit (0–9):</label>
+      <input type="number" name="digit" id="digit" min="0" max="9" required />
+      <button type="submit">Generate</button>
+    </form>
+
+    {% if digit is not none %}
+      <h2>Generated Images for Digit {{ digit }}</h2>
+      <div class="images">
+        {% for img in images %}
+          <img src="data:image/png;base64,{{ img }}" alt="Digit {{ digit }}" />
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>
